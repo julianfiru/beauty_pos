@@ -1,0 +1,51 @@
+name: beauty_pos
+description: "BeautyPOS - Modern Beauty Salon POS & Clinic Management Application"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # UI & Styling
+  cupertino_icons: ^1.0.8
+  google_fonts: ^6.2.1
+  intl: ^0.20.2
+  fl_chart: ^0.70.2
+
+  # State Management
+  flutter_riverpod: ^2.6.1
+
+  # Local Database (Offline-First)
+  sqflite: ^2.4.1
+  sqflite_common_ffi: ^2.3.4+4
+  path: ^1.9.0
+  path_provider: ^2.1.5
+
+  # QRIS & Barcode
+  qr_flutter: ^4.1.0
+
+  # Hardware & Thermal Printer
+  print_bluetooth_thermal: ^1.1.2
+  esc_pos_utils_plus: ^2.0.4
+
+  # Export & Reports
+  pdf: ^3.11.1
+  csv: ^6.0.0
+  share_plus: ^10.1.4
+
+  # Utilities
+  uuid: ^4.5.1
+  sqflite_common_ffi_web: ^1.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
