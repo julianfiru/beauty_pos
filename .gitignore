@@ -46,3 +46,7 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# AI Migration & Local Context Docs (Ignored from Git)
+AI_MIGRATION_GUIDE.md
+*MIGRATION*.md
