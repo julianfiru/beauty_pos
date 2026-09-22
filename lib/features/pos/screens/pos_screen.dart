@@ -5,6 +5,7 @@ import '../../../core/utils/currency_format.dart';
 import '../../../core/widgets/interactive_card.dart';
 import '../../../core/widgets/modern_tab_bar.dart';
 import '../../../core/widgets/flat_badge.dart';
+import '../../../core/widgets/app_image_view.dart';
 import '../providers/pos_provider.dart';
 import 'checkout_dialog.dart';
 
@@ -178,7 +179,7 @@ class _PosScreenState extends ConsumerState<PosScreen> {
           padding: const EdgeInsets.all(16),
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: 220,
-            childAspectRatio: 0.82,
+            childAspectRatio: 0.74,
             crossAxisSpacing: 14,
             mainAxisSpacing: 14,
           ),
@@ -189,47 +190,75 @@ class _PosScreenState extends ConsumerState<PosScreen> {
 
             return InteractiveCard(
               onTap: isOutOfStock ? null : () => ref.read(cartProvider.notifier).addProduct(product),
-              padding: const EdgeInsets.all(14),
+              padding: const EdgeInsets.all(10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: AppColors.secondary.withValues(alpha: 0.2),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Icon(Icons.inventory_2_outlined, color: AppColors.primaryDark, size: 18),
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          AppImageView(
+                            imageUrl: product.imageUrl,
+                            fit: BoxFit.cover,
+                            borderRadius: BorderRadius.circular(12),
+                            fallbackIcon: Icons.inventory_2_outlined,
+                            fallbackIconSize: 34,
+                            fallbackColor: AppColors.primaryDark,
+                            fallbackBackgroundColor: AppColors.secondary.withValues(alpha: 0.2),
+                          ),
+                          Positioned(
+                            top: 8,
+                            right: 8,
+                            child: FlatBadge(
+                              label: 'Stok: ${product.stock}',
+                              color: isOutOfStock ? AppColors.error : AppColors.textPrimary,
+                              backgroundColor: isOutOfStock
+                                  ? AppColors.errorBg
+                                  : Colors.white.withValues(alpha: 0.94),
+                              fontSize: 10.5,
+                            ),
+                          ),
+                          if (isOutOfStock)
+                            Container(
+                              color: Colors.black.withValues(alpha: 0.45),
+                              child: const Center(
+                                child: FlatBadge(
+                                  label: 'HABIS',
+                                  color: Colors.white,
+                                  backgroundColor: AppColors.error,
+                                  fontSize: 11,
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
-                      FlatBadge(
-                        label: 'Stok: ${product.stock}',
-                        color: isOutOfStock ? AppColors.error : AppColors.textSecondary,
-                        backgroundColor: isOutOfStock ? AppColors.errorBg : AppColors.background,
-                        fontSize: 11,
-                      ),
-                    ],
+                    ),
                   ),
-                  const Spacer(),
+                  const SizedBox(height: 8),
                   Text(
                     product.name,
                     style: const TextStyle(
                       fontWeight: FontWeight.w700,
-                      fontSize: 13.5,
+                      fontSize: 13,
                       color: AppColors.textPrimary,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 6),
-                  Text(
-                    CurrencyFormat.toIdr(product.price),
-                    style: const TextStyle(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 14.5,
+                  const SizedBox(height: 4),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      CurrencyFormat.toIdr(product.price),
+                      style: const TextStyle(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 14,
+                      ),
                     ),
                   ),
                 ],
@@ -267,7 +296,7 @@ class _PosScreenState extends ConsumerState<PosScreen> {
           padding: const EdgeInsets.all(16),
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: 220,
-            childAspectRatio: 0.82,
+            childAspectRatio: 0.74,
             crossAxisSpacing: 14,
             mainAxisSpacing: 14,
           ),
@@ -277,48 +306,62 @@ class _PosScreenState extends ConsumerState<PosScreen> {
 
             return InteractiveCard(
               onTap: () => ref.read(cartProvider.notifier).addService(service),
-              padding: const EdgeInsets.all(14),
+              padding: const EdgeInsets.all(10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: AppColors.accentPink.withValues(alpha: 0.4),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Icon(Icons.spa_outlined, color: AppColors.accentPinkDark, size: 18),
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          AppImageView(
+                            imageUrl: service.imageUrl,
+                            fit: BoxFit.cover,
+                            borderRadius: BorderRadius.circular(12),
+                            fallbackIcon: Icons.spa_outlined,
+                            fallbackIconSize: 34,
+                            fallbackColor: AppColors.accentPinkDark,
+                            fallbackBackgroundColor: AppColors.accentPink.withValues(alpha: 0.35),
+                          ),
+                          Positioned(
+                            top: 8,
+                            right: 8,
+                            child: FlatBadge(
+                              label: '${service.durationMinutes} mnt',
+                              icon: Icons.timer_outlined,
+                              color: AppColors.secondaryDark,
+                              backgroundColor: Colors.white.withValues(alpha: 0.94),
+                              fontSize: 10.5,
+                            ),
+                          ),
+                        ],
                       ),
-                      FlatBadge(
-                        label: '${service.durationMinutes} mnt',
-                        color: AppColors.accentPinkDark,
-                        backgroundColor: AppColors.accentPinkLight,
-                        icon: Icons.timer_outlined,
-                        fontSize: 11,
-                      ),
-                    ],
+                    ),
                   ),
-                  const Spacer(),
+                  const SizedBox(height: 8),
                   Text(
                     service.name,
                     style: const TextStyle(
                       fontWeight: FontWeight.w700,
-                      fontSize: 13.5,
+                      fontSize: 13,
                       color: AppColors.textPrimary,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 6),
-                  Text(
-                    CurrencyFormat.toIdr(service.price),
-                    style: const TextStyle(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 14.5,
+                  const SizedBox(height: 4),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      CurrencyFormat.toIdr(service.price),
+                      style: const TextStyle(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 14,
+                      ),
                     ),
                   ),
                 ],
@@ -385,7 +428,7 @@ class _PosScreenState extends ConsumerState<PosScreen> {
                 : ListView.separated(
                     padding: const EdgeInsets.all(16),
                     itemCount: cart.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 10),
+                    separatorBuilder: (context, index) => const SizedBox(height: 10),
                     itemBuilder: (context, index) {
                       final item = cart[index];
                       final isProduct = item.itemType == 'PRODUCT';
@@ -399,18 +442,14 @@ class _PosScreenState extends ConsumerState<PosScreen> {
                         ),
                         child: Row(
                           children: [
-                            Container(
-                              width: 38,
-                              height: 38,
-                              decoration: BoxDecoration(
-                                color: isProduct ? AppColors.secondary.withValues(alpha: 0.3) : AppColors.accentPink.withValues(alpha: 0.5),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Icon(
-                                isProduct ? Icons.inventory_2_outlined : Icons.spa_outlined,
-                                size: 18,
-                                color: isProduct ? AppColors.primaryDark : AppColors.accentPinkDark,
-                              ),
+                            AppImageView(
+                              imageUrl: item.imageUrl,
+                              width: 44,
+                              height: 44,
+                              borderRadius: BorderRadius.circular(10),
+                              fallbackIcon: isProduct ? Icons.inventory_2_outlined : Icons.spa_outlined,
+                              fallbackColor: isProduct ? AppColors.primaryDark : AppColors.accentPinkDark,
+                              fallbackBackgroundColor: isProduct ? AppColors.secondary.withValues(alpha: 0.3) : AppColors.accentPink.withValues(alpha: 0.5),
                             ),
                             const SizedBox(width: 12),
                             Expanded(
@@ -424,9 +463,13 @@ class _PosScreenState extends ConsumerState<PosScreen> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   const SizedBox(height: 2),
-                                  Text(
-                                    CurrencyFormat.toIdr(item.price),
-                                    style: const TextStyle(color: AppColors.textSecondary, fontSize: 12, fontWeight: FontWeight.w600),
+                                  FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      CurrencyFormat.toIdr(item.price),
+                                      style: const TextStyle(color: AppColors.textSecondary, fontSize: 12, fontWeight: FontWeight.w600),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -487,9 +530,18 @@ class _PosScreenState extends ConsumerState<PosScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text('Total Tagihan', style: TextStyle(fontSize: 14, color: AppColors.textSecondary, fontWeight: FontWeight.w600)),
-                      Text(
-                        CurrencyFormat.toIdr(total),
-                        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: AppColors.primary),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              CurrencyFormat.toIdr(total),
+                              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: AppColors.primary),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),

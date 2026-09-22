@@ -172,9 +172,12 @@ class _QrisDialogState extends ConsumerState<QrisDialog> {
                         ),
                       ),
                       const SizedBox(height: 12),
-                      Text(
-                        CurrencyFormat.toIdr(session.amount),
-                        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: AppColors.primary),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          CurrencyFormat.toIdr(session.amount),
+                          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: AppColors.primary),
+                        ),
                       ),
                     ],
                   );

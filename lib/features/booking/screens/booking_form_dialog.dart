@@ -137,14 +137,28 @@ class _BookingFormDialogState extends ConsumerState<BookingFormDialog> {
                 servicesAsync.when(
                   data: (services) {
                     return DropdownButtonFormField<int>(
+                      isExpanded: true,
                       decoration: const InputDecoration(labelText: 'Pilih Jasa Treatment', prefixIcon: Icon(Icons.spa_outlined, size: 20)),
                       initialValue: _selectedServiceId,
                       items: services.map((s) {
                         return DropdownMenuItem<int>(
                           value: s.id,
-                          child: Text('${s.name} (${s.durationMinutes} mnt)'),
+                          child: Text(
+                            '${s.name} (${s.durationMinutes} mnt)',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
                         );
                       }).toList(),
+                      selectedItemBuilder: (context) {
+                        return services.map((s) {
+                          return Text(
+                            '${s.name} (${s.durationMinutes} mnt)',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          );
+                        }).toList();
+                      },
                       onChanged: (val) {
                         setState(() {
                           _selectedServiceId = val;
@@ -154,7 +168,7 @@ class _BookingFormDialogState extends ConsumerState<BookingFormDialog> {
                     );
                   },
                   loading: () => const LinearProgressIndicator(),
-                  error: (_, __) => const Text('Gagal memuat jasa'),
+                  error: (e, st) => const Text('Gagal memuat jasa'),
                 ),
                 const SizedBox(height: 12),
                 TextFormField(
@@ -206,9 +220,11 @@ class _BookingFormDialogState extends ConsumerState<BookingFormDialog> {
                             children: [
                               const Icon(Icons.access_time_outlined, size: 18, color: AppColors.primary),
                               const SizedBox(width: 8),
-                              Text(
-                                _selectedTime.format(context),
-                                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                              Expanded(
+                                child: Text(
+                                  _selectedTime.format(context),
+                                  style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                                ),
                               ),
                             ],
                           ),

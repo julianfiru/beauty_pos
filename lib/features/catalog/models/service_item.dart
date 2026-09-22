@@ -5,6 +5,7 @@ class ServiceItem {
   final double price;
   final int durationMinutes;
   final String? description;
+  final String? imageUrl;
   final String createdAt;
 
   ServiceItem({
@@ -14,6 +15,7 @@ class ServiceItem {
     required this.price,
     required this.durationMinutes,
     this.description,
+    this.imageUrl,
     required this.createdAt,
   });
 
@@ -25,6 +27,7 @@ class ServiceItem {
       'price': price,
       'durationMinutes': durationMinutes,
       'description': description,
+      'imageUrl': imageUrl,
       'createdAt': createdAt,
     };
   }
@@ -37,6 +40,7 @@ class ServiceItem {
       price: (map['price'] as num).toDouble(),
       durationMinutes: map['durationMinutes'] as int,
       description: map['description'] as String?,
+      imageUrl: map['imageUrl'] as String?,
       createdAt: map['createdAt'] as String,
     );
   }
@@ -48,6 +52,7 @@ class ServiceItem {
     double? price,
     int? durationMinutes,
     String? description,
+    String? imageUrl,
     String? createdAt,
   }) {
     return ServiceItem(
@@ -57,6 +62,7 @@ class ServiceItem {
       price: price ?? this.price,
       durationMinutes: durationMinutes ?? this.durationMinutes,
       description: description ?? this.description,
+      imageUrl: imageUrl ?? this.imageUrl,
       createdAt: createdAt ?? this.createdAt,
     );
   }

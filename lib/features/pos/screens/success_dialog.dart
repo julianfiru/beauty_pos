@@ -35,50 +35,54 @@ class SuccessDialog extends ConsumerWidget {
       child: Container(
         width: 400,
         padding: const EdgeInsets.all(28),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: const BoxDecoration(
-                color: AppColors.successBg,
-                shape: BoxShape.circle,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: const BoxDecoration(
+                  color: AppColors.successBg,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.check_rounded, color: AppColors.success, size: 48),
               ),
-              child: const Icon(Icons.check_rounded, color: AppColors.success, size: 48),
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'Transaksi Berhasil!',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: AppColors.textPrimary),
-            ),
-            const SizedBox(height: 6),
-            FlatBadge(
-              label: 'Order #$orderNumber • $paymentMethod',
-              color: AppColors.textSecondary,
-              backgroundColor: AppColors.background,
-              fontSize: 12,
-            ),
-            const SizedBox(height: 20),
-            // Change Box
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: AppColors.primaryLight,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
+              const SizedBox(height: 16),
+              const Text(
+                'Transaksi Berhasil!',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: AppColors.textPrimary),
               ),
-              child: Column(
-                children: [
-                  const Text('Uang Kembalian', style: TextStyle(color: AppColors.primaryDark, fontSize: 13, fontWeight: FontWeight.w600)),
-                  const SizedBox(height: 4),
-                  Text(
-                    CurrencyFormat.toIdr(changeAmount),
-                    style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800, color: AppColors.primary),
-                  ),
-                ],
+              const SizedBox(height: 6),
+              FlatBadge(
+                label: 'Order #$orderNumber • $paymentMethod',
+                color: AppColors.textSecondary,
+                backgroundColor: AppColors.background,
+                fontSize: 12,
               ),
-            ),
+              const SizedBox(height: 20),
+              // Change Box
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(18),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryLight,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
+                ),
+                child: Column(
+                  children: [
+                    const Text('Uang Kembalian', style: TextStyle(color: AppColors.primaryDark, fontSize: 13, fontWeight: FontWeight.w600)),
+                    const SizedBox(height: 4),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        CurrencyFormat.toIdr(changeAmount),
+                        style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800, color: AppColors.primary),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             const SizedBox(height: 24),
             Row(
               children: [
@@ -134,6 +138,7 @@ class SuccessDialog extends ConsumerWidget {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/widgets/image_picker_box.dart';
 import '../models/service_item.dart';
 import '../providers/catalog_provider.dart';
 
@@ -20,6 +21,7 @@ class _ServiceFormDialogState extends ConsumerState<ServiceFormDialog> {
   late TextEditingController _priceController;
   late TextEditingController _durationController;
   late TextEditingController _descController;
+  String? _imageUrl;
 
   @override
   void initState() {
@@ -29,6 +31,7 @@ class _ServiceFormDialogState extends ConsumerState<ServiceFormDialog> {
     _priceController = TextEditingController(text: widget.service?.price.toString() ?? '');
     _durationController = TextEditingController(text: widget.service?.durationMinutes.toString() ?? '60');
     _descController = TextEditingController(text: widget.service?.description ?? '');
+    _imageUrl = widget.service?.imageUrl;
   }
 
   @override
@@ -50,6 +53,7 @@ class _ServiceFormDialogState extends ConsumerState<ServiceFormDialog> {
         price: double.parse(_priceController.text.trim()),
         durationMinutes: int.parse(_durationController.text.trim()),
         description: _descController.text.trim(),
+        imageUrl: _imageUrl,
         createdAt: widget.service?.createdAt ?? DateTime.now().toIso8601String(),
       );
 
@@ -68,8 +72,8 @@ class _ServiceFormDialogState extends ConsumerState<ServiceFormDialog> {
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       child: Container(
-        width: 440,
-        padding: const EdgeInsets.all(28),
+        width: 460,
+        padding: const EdgeInsets.all(26),
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
@@ -90,7 +94,16 @@ class _ServiceFormDialogState extends ConsumerState<ServiceFormDialog> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 18),
+                ImagePickerBox(
+                  imageUrl: _imageUrl,
+                  label: 'Foto Treatment (Opsional)',
+                  placeholderIcon: Icons.spa_outlined,
+                  onImageSelected: (url) {
+                    setState(() => _imageUrl = url);
+                  },
+                ),
+                const SizedBox(height: 16),
                 TextFormField(
                   controller: _nameController,
                   decoration: const InputDecoration(labelText: 'Nama Jasa / Treatment', prefixIcon: Icon(Icons.spa_outlined, size: 20)),

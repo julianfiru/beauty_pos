@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/widgets/image_picker_box.dart';
 import '../models/product.dart';
 import '../providers/catalog_provider.dart';
 
@@ -21,6 +22,7 @@ class _ProductFormDialogState extends ConsumerState<ProductFormDialog> {
   late TextEditingController _costPriceController;
   late TextEditingController _stockController;
   late TextEditingController _barcodeController;
+  String? _imageUrl;
 
   @override
   void initState() {
@@ -31,6 +33,7 @@ class _ProductFormDialogState extends ConsumerState<ProductFormDialog> {
     _costPriceController = TextEditingController(text: widget.product?.costPrice.toString() ?? '');
     _stockController = TextEditingController(text: widget.product?.stock.toString() ?? '0');
     _barcodeController = TextEditingController(text: widget.product?.barcode ?? '');
+    _imageUrl = widget.product?.imageUrl;
   }
 
   @override
@@ -54,6 +57,7 @@ class _ProductFormDialogState extends ConsumerState<ProductFormDialog> {
         costPrice: double.parse(_costPriceController.text.trim()),
         stock: int.parse(_stockController.text.trim()),
         barcode: _barcodeController.text.trim(),
+        imageUrl: _imageUrl,
         createdAt: widget.product?.createdAt ?? DateTime.now().toIso8601String(),
       );
 
@@ -72,8 +76,8 @@ class _ProductFormDialogState extends ConsumerState<ProductFormDialog> {
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       child: Container(
-        width: 440,
-        padding: const EdgeInsets.all(28),
+        width: 460,
+        padding: const EdgeInsets.all(26),
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
@@ -94,7 +98,16 @@ class _ProductFormDialogState extends ConsumerState<ProductFormDialog> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 18),
+                ImagePickerBox(
+                  imageUrl: _imageUrl,
+                  label: 'Foto Produk (Opsional)',
+                  placeholderIcon: Icons.inventory_2_outlined,
+                  onImageSelected: (url) {
+                    setState(() => _imageUrl = url);
+                  },
+                ),
+                const SizedBox(height: 16),
                 TextFormField(
                   controller: _nameController,
                   decoration: const InputDecoration(labelText: 'Nama Produk', prefixIcon: Icon(Icons.inventory_2_outlined, size: 20)),

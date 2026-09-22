@@ -4,6 +4,7 @@ class CartItem {
   final String name;
   final double price;
   final int qty;
+  final String? imageUrl;
 
   CartItem({
     required this.itemId,
@@ -11,6 +12,7 @@ class CartItem {
     required this.name,
     required this.price,
     this.qty = 1,
+    this.imageUrl,
   });
 
   double get subtotal => price * qty;
@@ -21,6 +23,7 @@ class CartItem {
     String? name,
     double? price,
     int? qty,
+    String? imageUrl,
   }) {
     return CartItem(
       itemId: itemId ?? this.itemId,
@@ -28,6 +31,7 @@ class CartItem {
       name: name ?? this.name,
       price: price ?? this.price,
       qty: qty ?? this.qty,
+      imageUrl: imageUrl ?? this.imageUrl,
     );
   }
 }

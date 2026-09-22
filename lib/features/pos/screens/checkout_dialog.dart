@@ -93,10 +93,11 @@ class _CheckoutDialogState extends ConsumerState<CheckoutDialog> {
       child: Container(
         width: 440,
         padding: const EdgeInsets.all(28),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -129,9 +130,18 @@ class _CheckoutDialogState extends ConsumerState<CheckoutDialog> {
                       Text('Wajib Dibayar', style: TextStyle(color: AppColors.textMuted, fontSize: 11)),
                     ],
                   ),
-                  Text(
-                    CurrencyFormat.toIdr(widget.totalAmount),
-                    style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800, color: AppColors.primary),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          CurrencyFormat.toIdr(widget.totalAmount),
+                          style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800, color: AppColors.primary),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -151,23 +161,32 @@ class _CheckoutDialogState extends ConsumerState<CheckoutDialog> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text('Uang Diterima', style: TextStyle(color: AppColors.textSecondary, fontWeight: FontWeight.w600, fontSize: 13)),
-                      Row(
-                        children: [
-                          Text(
-                            CurrencyFormat.toIdr(_amountTendered),
-                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: AppColors.textPrimary),
-                          ),
-                          if (_amountTendered > 0) ...[
-                            const SizedBox(width: 8),
-                            InkWell(
-                              onTap: _clearAmount,
-                              child: const Padding(
-                                padding: EdgeInsets.all(4),
-                                child: Icon(Icons.refresh, size: 18, color: AppColors.error),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Flexible(
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  CurrencyFormat.toIdr(_amountTendered),
+                                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: AppColors.textPrimary),
+                                ),
                               ),
                             ),
+                            if (_amountTendered > 0) ...[
+                              const SizedBox(width: 8),
+                              InkWell(
+                                onTap: _clearAmount,
+                                child: const Padding(
+                                  padding: EdgeInsets.all(4),
+                                  child: Icon(Icons.refresh, size: 18, color: AppColors.error),
+                                ),
+                              ),
+                            ],
                           ],
-                        ],
+                        ),
                       ),
                     ],
                   ),
@@ -179,12 +198,21 @@ class _CheckoutDialogState extends ConsumerState<CheckoutDialog> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text('Kembalian', style: TextStyle(color: AppColors.textSecondary, fontWeight: FontWeight.w600, fontSize: 13)),
-                      Text(
-                        change < 0 ? 'Rp 0' : CurrencyFormat.toIdr(change),
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                          color: change < 0 ? AppColors.textMuted : AppColors.success,
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              change < 0 ? 'Rp 0' : CurrencyFormat.toIdr(change),
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w800,
+                                color: change < 0 ? AppColors.textMuted : AppColors.success,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -248,8 +276,9 @@ class _CheckoutDialogState extends ConsumerState<CheckoutDialog> {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildPresetButton(String label, VoidCallback onTap, {bool isHighlight = false}) {
     return InkWell(

@@ -5,6 +5,7 @@ import '../../../core/utils/currency_format.dart';
 import '../../../core/widgets/flat_badge.dart';
 import '../../../core/widgets/interactive_card.dart';
 import '../../../core/widgets/modern_tab_bar.dart';
+import '../../../core/widgets/app_image_view.dart';
 import '../providers/catalog_provider.dart';
 import 'product_form_dialog.dart';
 import 'service_form_dialog.dart';
@@ -132,14 +133,14 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
               padding: const EdgeInsets.all(14),
               child: Row(
                 children: [
-                  Container(
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      color: AppColors.secondary.withValues(alpha: 0.25),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Icon(Icons.inventory_2_outlined, color: AppColors.primaryDark, size: 20),
+                  AppImageView(
+                    imageUrl: product.imageUrl,
+                    width: 48,
+                    height: 48,
+                    borderRadius: BorderRadius.circular(12),
+                    fallbackIcon: Icons.inventory_2_outlined,
+                    fallbackColor: AppColors.primaryDark,
+                    fallbackBackgroundColor: AppColors.secondary.withValues(alpha: 0.25),
                   ),
                   const SizedBox(width: 14),
                   Expanded(
@@ -224,14 +225,14 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
               padding: const EdgeInsets.all(14),
               child: Row(
                 children: [
-                  Container(
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      color: AppColors.accentPink.withValues(alpha: 0.5),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Icon(Icons.spa_outlined, color: AppColors.accentPinkDark, size: 20),
+                  AppImageView(
+                    imageUrl: service.imageUrl,
+                    width: 48,
+                    height: 48,
+                    borderRadius: BorderRadius.circular(12),
+                    fallbackIcon: Icons.spa_outlined,
+                    fallbackColor: AppColors.accentPinkDark,
+                    fallbackBackgroundColor: AppColors.accentPink.withValues(alpha: 0.5),
                   ),
                   const SizedBox(width: 14),
                   Expanded(

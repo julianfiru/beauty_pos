@@ -18,9 +18,10 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDB(String filePath) async {
+    Database db;
     if (kIsWeb) {
       databaseFactory = databaseFactoryFfiWeb;
-      return await databaseFactory.openDatabase(
+      db = await databaseFactory.openDatabase(
         filePath,
         options: OpenDatabaseOptions(
           version: 1,
@@ -39,7 +40,7 @@ class DatabaseHelper {
         dir.createSync(recursive: true);
       }
       
-      return await openDatabase(
+      db = await openDatabase(
         dbPath,
         version: 1,
         onCreate: _createDB,
@@ -48,11 +49,28 @@ class DatabaseHelper {
       final dbPath = await getDatabasesPath();
       final path = join(dbPath, filePath);
 
-      return await openDatabase(
+      db = await openDatabase(
         path,
         version: 1,
         onCreate: _createDB,
       );
+    }
+
+    // Safe migration check for existing databases
+    await _ensureServicesImageUrlColumn(db);
+
+    return db;
+  }
+
+  Future<void> _ensureServicesImageUrlColumn(Database db) async {
+    try {
+      final columns = await db.rawQuery('PRAGMA table_info(services)');
+      final hasImageUrl = columns.any((col) => col['name'] == 'imageUrl');
+      if (!hasImageUrl) {
+        await db.execute('ALTER TABLE services ADD COLUMN imageUrl TEXT');
+      }
+    } catch (e) {
+      debugPrint('Error ensuring services imageUrl column: $e');
     }
   }
 
@@ -81,6 +99,7 @@ class DatabaseHelper {
         price REAL NOT NULL,
         durationMinutes INTEGER NOT NULL,
         description TEXT,
+        imageUrl TEXT,
         createdAt TEXT NOT NULL
       )
     ''');

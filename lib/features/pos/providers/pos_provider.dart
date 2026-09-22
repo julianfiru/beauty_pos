@@ -42,6 +42,7 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
             itemType: 'PRODUCT',
             name: product.name,
             price: product.price,
+            imageUrl: product.imageUrl,
           ),
         ];
       }
@@ -66,6 +67,7 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
           itemType: 'SERVICE',
           name: service.name,
           price: service.price,
+          imageUrl: service.imageUrl,
         ),
       ];
     }
